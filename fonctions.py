@@ -211,7 +211,7 @@ def menu_french():
         print("Avant d'aller plus loin, vous allez devoir saisir un chemin d'accès pour faciliter mon utilisation. ")
         reponse = input("Savez vous comment ajouter un chemin d'accès ? \n"
                         "réponse : ")
-        while reponse.lower() not in ['oui', 'yes', 'bien sûr', 'je sais', 'bien sur'] and reponse.lower() not in ['non','no','je ne connais pas','je ne sais pas']:
+        while reponse.lower() not in ['oui', 'yes', 'bien sûr', 'je sais', 'bien sur'] or reponse.lower() not in ['non','no','je ne connais pas','je ne sais pas']:
             if reponse.lower() in ['oui', 'yes', 'bien sûr', 'je sais']:
                 break
             elif reponse.lower() in ['non', 'no', 'je ne connais pas', 'je ne sais pas', 'explique', 'dit moi tous']:
@@ -257,7 +257,7 @@ def menu_english():
         print("Before going any further, you'll need to enter an access path to facilitate my use. ")
         reponse = input("Do you know how to add a path ? \n"
                         "answer : ")
-        while reponse.lower() not in ['oui', 'yes', 'of course', 'i know','sure'] and reponse.lower() not in ['non', 'no', "I don't know", "I don't know", 'Explain', 'Tell me all about it']:
+        while reponse.lower() not in ['oui', 'yes', 'of course', 'i know','sure'] or reponse.lower() not in ['non', 'no', "I don't know", "I don't know", 'Explain', 'Tell me all about it']:
             if reponse.lower() in ['oui', 'yes', 'of course', 'i know','sure']:
                 break
             elif reponse.lower() in ['non', 'no', "I don't know", "I don't know", 'Explain', 'Tell me all about it']:
@@ -302,7 +302,7 @@ def menu_spanish():
         print("Antes de seguir adelante, tendrás que introducir una ruta para facilitar su uso. ")
         reponse = input("¿Sabes cómo añadir una ruta ? \n"
                         "responder : ")
-        while reponse.lower() not in ['oui', "sí",'si', "por supuesto", "lo sé"] and reponse.lower() not in ['non', 'no', 'no lo sé', 'no lo sé', 'explícame', 'cuéntamelo todo']:
+        while reponse.lower() not in ['oui', "sí",'si', "por supuesto", "lo sé"] or reponse.lower() not in ['non', 'no', 'no lo sé', 'no lo sé', 'explícame', 'cuéntamelo todo']:
             if reponse.lower() in ['oui', "sí",'si', "por supuesto", "lo sé"]:
                 break
             elif reponse.lower() in ['non', 'no', 'no lo sé', 'no lo sé', 'explícame', 'cuéntamelo todo']:
