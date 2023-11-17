@@ -365,66 +365,187 @@ def langue():
 
 
 
-def menu_french_new():
-    run = True
-    while run == True:
-        print("Bonjour !\n")
+
+# ================================= Les nouvelles différentes langues du menu ===================================
+def new_menu_english():
+    run1 = True
+    while run1 == True:
+        print("Hello !\n")
         time.sleep(1)
-        print("Je suis ChatBot \n")
+        print("I'm ChatBot \n")
         time.sleep(1)
-        print("Tapez l'un des chiffres \n")
+        print("Enter one of the numbers \n")
         time.sleep(1)
-        print("1 - Commençez\n2 - Options\n3 - Comment ça marche ? \n4 - À quoi sert ?\n5 - Quittez\n")
+        print("1 - Get started\n2 - Options\n3 - How does it work ?\n4 - What's it for?\n5 - Quit\n")
         lancement = input(":")
         while lancement not in ['1', '2', '3', '4', '5']:
             lancement = input(":")
         if lancement == '1':
-            print("Avant d'aller plus loin, vous allez devoir saisir un chemin d'accès pour faciliter mon utilisation. ")
-            reponse = input("Savez vous comment ajouter un chemin d'accès ?\n1 - Oui\n2 - Non\n3 - Retour\n4 _ Quittez\n:")
+            print(
+                "Before going any further, you'll need to enter an access path to facilitate my use.")
+            reponse = input(
+                "Do you know how to add a path ?\n1 - Yes\n2 - No\n3 - Return\n4 _ Quit\n:")
             while reponse not in ['1', '2', '3', '4']:
                 reponse = input(":")
-            if reponse == '1':
+            if reponse == '1':  # confimation de passage à l'étape suivante
                 pass
-            elif reponse == '2':
-                print("Pour ajouter un chemin d'accès, vous devez aller sur le fichier ou dossier que vous voulez son chemin d'accès, puis faites un clique droit. \nSéléctionnez 'Copy Path' puis 'Absolue path' et il ne vous restera plus qu'à coller le chemin d'accès que vous venez de copier \n")
+            elif reponse == '2':  # Non # qui permet d'expliquer l'ajout d'un chemin si besoin
+                print(
+                    "To add a path, go to the file or folder you want to add a path to, then right-click on it. \nSelect 'Copy Path' then 'Absolute path', and all that's left to do is paste the path you've just copied. \n")
                 pass
-            elif reponse == '3':
+            elif reponse == '3':  # Retour
                 continue
-            elif reponse == '4':
+            elif reponse == '4':  # Quittez
                 break
             directory = None
             while directory is None:
-                directory = input(("Saissisez votre chemin d'accès du dossier 'speeches' : "))
+                directory = input(("Enter your 'speeches' folder path:"))
+                # directory = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\speeches-20231110'
+
+                files_names = list_of_files(directory, "txt")
+                print_list(files_names)
+
+                # ================== Création des fichiers du répertoire "Cleaned" ===========================
+                cleaned(directory)
         elif lancement == '2':
-            option = input("Tapez un chiffre\n1 - Langue\n2 - Crédit\n3 - Retour\n:")
+            option = input("Type a number\n1 - Language\n2 - Credit\n3 - Return\n:")
             while option not in ['1', '2', '3']:
                 option = input(":")
             if option == '1':
-                langue = input("1 - Français\n2 - English\n3 - Espanõl\n4 - Retour\n: ")
+                langue = input("1 - Français\n2 - English\n3 - Espanõl\n4 - Return\n: ")
                 while langue not in ['1', '2', '3', '4']:
                     langue = input(":")
                 if langue == '1':
-                    continue
+                    #run = False
+                    run1 = False
+                    run2 = False
                 elif langue == '2':
-                    print("Bientôt disponible.\n ")
+                    # print("Bientôt disponible.\n ")
                     continue
                 elif langue == "3":
-                    print("Bientôt disponible. \n")
+                    end = new_menu_spanish()
+                    if end == '5':
+                        run = False
+                        run1 = False
+                        run2 = False
                     continue
                 elif langue == '4':
                     continue
             elif option == '2':
-                print("Crédit du programme")
+                print("Program credit")
                 time.sleep(1)
-                print("réalisé par : \n")
+                print("produced by : \n")
                 time.sleep(1)
                 print("Joss DOUNIAMA OKANA\n")
                 time.sleep(1)
                 print("Liam CROGUENNEC\n")
                 time.sleep(1)
-                print("Projet Python\n")
+                print("Python project\n")
                 time.sleep(1)
-                print("Groupe BN 2023-2024\n")
+                print("Group BN 2023-2024\n")
+                time.sleep(1)
+                print("End\n")
+                time.sleep(1)
+                continue
+            elif option == '3':
+                continue
+        elif lancement == '3':
+            print("\nStart, then follow the instructions. \n")
+            continue
+        elif lancement == '4':
+            print("\nAvailable soon. \n")
+            continue
+        elif lancement == '5':
+            run1 = False
+            run = False
+            run2 = False
+            return '5'
+        break
+
+
+
+
+
+
+
+def new_menu_spanish():
+    #run2 = True
+    #while run2 == True:
+    # appel de la fonction pour choisir la langue du menu
+    # directory = langue()
+    run2 = True
+    while run2 == True:
+        print("Hola !\n")
+        time.sleep(1)
+        print("Soy ChatBot \n")
+        time.sleep(1)
+        print("Introduce uno de los números \n")
+        time.sleep(1)
+        print("1 - ¿Empezar?\n2 - Opciones\n3 - ¿Cómo funciona?\n4 - ¿Para qué sirve?\n5 - Abandone\n")
+        lancement = input(":")
+        while lancement not in ['1', '2', '3', '4', '5']:
+            lancement = input(":")
+        if lancement == '1':
+            print(
+                "Antes de seguir adelante, tendrás que introducir una ruta de acceso para facilitar mi uso.")
+            reponse = input(
+                "¿Sabes cómo añadir una ruta?\n1 - Sì\n2 - No\n3 - Volver\n4 _ Abandone\n:")
+            while reponse not in ['1', '2', '3', '4']:
+                reponse = input(":")
+            if reponse == '1':  # confimation de passage à l'étape suivante
+                pass
+            elif reponse == '2':  # Non # qui permet d'expliquer l'ajout d'un chemin si besoin
+                print(
+                    "Para añadir una ruta, vaya al archivo o carpeta al que desea añadir una ruta y haga clic con el botón derecho del ratón. \nSeleccione 'Copiar ruta' y luego 'Ruta absoluta', y ya sólo te quedará pegar la ruta que acabas de copiar. \n")
+                pass
+            elif reponse == '3':  # Retour
+                continue
+            elif reponse == '4':  # Quittez
+                break
+            directory = None
+            while directory is None:
+                directory = input(("Introduzca la ruta a su carpeta 'speeches':"))
+                # directory = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\speeches-20231110'
+
+                files_names = list_of_files(directory, "txt")
+                print_list(files_names)
+
+                # ================== Création des fichiers du répertoire "Cleaned" ===========================
+                cleaned(directory)
+        elif lancement == '2':
+            option = input("Escribe un número\n1 - Idioma\n2 - Crédito\n3 - Devolución\n:")
+            while option not in ['1', '2', '3']:
+                option = input(":")
+            if option == '1':
+                langue = input("1 - Français\n2 - English\n3 - Espanõl\n4 - Devolución\n: ")
+                while langue not in ['1', '2', '3', '4']:
+                    langue = input(":")
+                if langue == '1':
+                    run = False
+                    run1 = False
+                    run2 = False
+                elif langue == '2':
+                    end = new_menu_english()
+                    if end == '5':
+                        run = False
+                        run1 = False
+                        run2 = False
+                elif langue == "3":
+                    continue
+                elif langue == '4':
+                    continue
+            elif option == '2':
+                print("Crédito del programa")
+                time.sleep(1)
+                print("dirigido por : \n")
+                time.sleep(1)
+                print("Joss DOUNIAMA OKANA\n")
+                time.sleep(1)
+                print("Liam CROGUENNEC\n")
+                time.sleep(1)
+                print("Proyecto Python\n")
+                time.sleep(1)
+                print("Grupo BN 2023-2024\n")
                 time.sleep(1)
                 print("Fin\n")
                 time.sleep(1)
@@ -432,12 +553,15 @@ def menu_french_new():
             elif option == '3':
                 continue
         elif lancement == '3':
-            print("\nCommençez puis suivez les instructions. \n")
+            print("\nInicie y siga las instrucciones. \n")
             continue
         elif lancement == '4':
-            print("\nBientôt disponible. \n")
+            print("\nPronto disponible. \n")
             continue
         elif lancement == '5':
             run = False
-    return directory
+            run1 = False
+            run2 = False
+            return '5'
+        break
 
