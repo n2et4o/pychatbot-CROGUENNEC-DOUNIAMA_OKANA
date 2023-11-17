@@ -17,7 +17,7 @@ run = True
 while run == True:
     print("Bonjour !\n")
     time.sleep(1)
-    print("Je suis un ChatBot \n")
+    print("Je suis ChatBot \n")
     time.sleep(1)
     print("Tapez l'un des chiffres \n")
     time.sleep(1)
@@ -52,7 +52,7 @@ while run == True:
             # ================== Création des fichiers du répertoire "Cleaned" ===========================
             cleaned(directory)
             directory1 = 'C:\\Users\\33643\\PycharmProjects\\pychatbot-CROGUENNEC-DOUNIAMA_OKANA\\Cleaned'
-            TF(directory2)
+            TF(directory1)
     elif lancement == '2':
         option = input("Tapez un chiffre\n1 - Langue\n2 - Crédit\n3 - Retour\n:")
         while option not in ['1', '2', '3']:
