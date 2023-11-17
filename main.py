@@ -17,7 +17,7 @@ run = True
 while run == True:
     print("Bonjour !\n")
     time.sleep(1)
-    print("Je suis ChatBot \n")
+    print("Je suis un ChatBot \n")
     time.sleep(1)
     print("Tapez l'un des chiffres \n")
     time.sleep(1)
@@ -44,14 +44,15 @@ while run == True:
             break
         directory = None
         while directory is None:
-            directory = input(("Saissisez votre chemin d'accès du dossier 'speeches' : "))
-            # directory = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\speeches-20231110'
+            #directory = input(("Saissisez votre chemin d'accès du dossier 'speeches' : "))
+            directory = 'C:\\Users\\33643\\PycharmProjects\\pychatbot-CROGUENNEC-DOUNIAMA_OKANA\\speeches-20231110'
 
-            files_names = list_of_files(directory, "txt")
-            print_list(files_names)
-
+            #files_names = list_of_files(directory, "txt")
+            #print_list(files_names)
             # ================== Création des fichiers du répertoire "Cleaned" ===========================
             cleaned(directory)
+            directory2 = 'C:\\Users\\33643\\PycharmProjects\\pychatbot-CROGUENNEC-DOUNIAMA_OKANA\\Cleaned'
+            TF(directory2)
     elif lancement == '2':
         option = input("Tapez un chiffre\n1 - Langue\n2 - Crédit\n3 - Retour\n:")
         while option not in ['1', '2', '3']:

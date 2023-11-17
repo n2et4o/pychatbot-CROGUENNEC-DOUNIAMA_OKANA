@@ -9,16 +9,17 @@ def list_of_files(directory, extension):
  return files_names
 
 def print_list(files_names):
+    print("=====================")
     for i in files_names:
         print(i, '\n')
 
 # ========== changement en dictionnaire =============== #
     # Associations de chaques prénoms à une présisents par dictionnaire
 
-    cles = ['Jacques1','Jacques2','Valéry','François_Mitterand1','François_Mitterand2','Emmanuel','François','Nicolas']
+    cles = ['jacques1','Jacques2','Valéry','François','Emmanuel','François_Mitterand1','François_Mitterand2','Nicolas']
     #dictionnaire = {cles[i]: files_names[i] for i in range(len(cles))}
     dictionnaire ={}
-    for i in range(1,len(cles)):
+    for i in range(len(cles)):
         dictionnaire[cles[i]] = files_names[i]
     print("================ dictionnaire =========================",'\n')
     for cle, valeur in dictionnaire.items():
@@ -34,6 +35,62 @@ def print_list(files_names):
     # Affichage du résultat
     print(ensemble_resultat)
 #'''
+# ============ Création des TF =============#
+def TF(directory):
+    chir = "Chirac_mandat1.txt"
+    with open(os.path.join(directory,chir),"r") as ch:
+        contenu_ch = ch.read()
+        mot_ch = contenu_ch.split()
+        print(mot_ch)
+
+    chir2 = "Chirac_mandat2.txt"
+    with open(os.path.join(directory, chir2), "r") as ch2:
+        contenu_ch2 = ch2.read()
+        mot_ch2 = contenu_ch.split()
+        print(mot_ch2)
+
+    gis = "Giscard_mandat.txt"
+    with open(os.path.join(directory, gis), "r") as gis:
+        contenu_gis = gis.read()
+        mot_gis = contenu_gis.split()
+        print(mot_gis)
+
+    holl = "Holland_mandat.txt"
+    with open(os.path.join(directory, holl), "r") as holl:
+        contenu_holl = holl.read()
+        mot_holl = contenu_holl.split()
+        print(mot_holl)
+
+    mac = "Macron_mandat.txt"
+    with open(os.path.join(directory, mac), "r") as mac:
+        contenu_mac = mac.read()
+        mot_mac = contenu_mac.split()
+        print(mot_mac)
+
+    mitt = "Mitterrand1_mandat.txt"
+    with open(os.path.join(directory, mitt), "r") as mitt:
+        contenu_mitt = mitt.read()
+        mot_mitt = contenu_mitt.split()
+        print(mot_mitt)
+
+    mitt2 = "Mitterrand1_mandat2.txt"
+    with open(os.path.join(directory, mitt2), "r") as mitt2:
+        contenu_mitt2 = mitt2.read()
+        mot_mitt2 = contenu_mitt2.split()
+        print(mot_mitt2)
+
+    mitt2 = "Mitterrand2_mandat.txt"
+    with open(os.path.join(directory, mitt2), "r") as mitt2:
+        contenu_mitt2 = mitt2.read()
+        mot_mitt2 = contenu_mitt2.split()
+        print(mot_mitt2)
+
+    sarko = "Sarkozy_mandat.txt"
+    with open(os.path.join(directory, sarko), "r") as sarko:
+        contenu_sarko = sarko.read()
+        mot_sarko = contenu_sarko.split()
+        print(mot_sarko)
+
 
 # ================== Création des fichiers du répertoire "Cleaned" ===========================
 def cleaned(directory):
@@ -564,4 +621,3 @@ def new_menu_spanish():
             run2 = False
             return '5'
         break
-
