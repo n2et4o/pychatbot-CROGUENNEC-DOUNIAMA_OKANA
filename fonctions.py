@@ -9,13 +9,14 @@ def list_of_files(directory, extension):
  return files_names
 
 def print_list(files_names):
+    print("=====================")
     for i in files_names:
         print(i, '\n')
 
 # ========== changement en dictionnaire =============== #
     # Associations de chaques prénoms à une présisents par dictionnaire
 
-    cles = ['Jacques1','Jacques2','Valéry','François_Mitterand1','François_Mitterand2','Emmanuel','François','Nicolas']
+    cles = ['jacques1','Jacques2','Valéry','François','Emmanuel','François_Mitterand1','François_Mitterand2','Nicolas']
     #dictionnaire = {cles[i]: files_names[i] for i in range(len(cles))}
     dictionnaire ={}
     for i in range(1,len(cles)):
