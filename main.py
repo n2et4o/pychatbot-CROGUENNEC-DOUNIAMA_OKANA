@@ -51,7 +51,7 @@ while run == True:
             #print_list(files_names)
             # ================== Création des fichiers du répertoire "Cleaned" ===========================
             cleaned(directory)
-            directory2 = 'C:\\Users\\33643\\PycharmProjects\\pychatbot-CROGUENNEC-DOUNIAMA_OKANA\\Cleaned'
+            directory1 = 'C:\\Users\\33643\\PycharmProjects\\pychatbot-CROGUENNEC-DOUNIAMA_OKANA\\Cleaned'
             TF(directory2)
     elif lancement == '2':
         option = input("Tapez un chiffre\n1 - Langue\n2 - Crédit\n3 - Retour\n:")
@@ -101,7 +101,7 @@ while run == True:
         print("\nCommençez puis suivez les instructions. \n")
         continue
     elif lancement == '4':
-        print("\nBientôt disponible. \n")
+        print("\nJe sers à donner des informations sur les discours de tous les présidents de la cinquième République. \n")
         continue
     elif lancement == '5':
         run = False
