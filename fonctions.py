@@ -73,12 +73,6 @@ def TF(directory):
         mot_mitt = contenu_mitt.split()
         print(mot_mitt)
 
-    mitt2 = "Mitterrand1_mandat2.txt"
-    with open(os.path.join(directory, mitt2), "r") as mitt2:
-        contenu_mitt2 = mitt2.read()
-        mot_mitt2 = contenu_mitt2.split()
-        print(mot_mitt2)
-
     mitt2 = "Mitterrand2_mandat.txt"
     with open(os.path.join(directory, mitt2), "r") as mitt2:
         contenu_mitt2 = mitt2.read()
