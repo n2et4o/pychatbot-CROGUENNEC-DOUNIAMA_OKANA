@@ -11,18 +11,18 @@ def list_of_files(directory, extension):
  return files_names
 
 def print_list(files_names):
-    for i in files_names:
-        print(i, '\n')
+    #for i in files_names:
+     #   print(i, '\n')
 
 # ========== changement en dictionnaire =============== #
     # Associations de chaques prénoms à une présisents par dictionnaire
 
-    cles = ['jacques1','Jacques2','Valéry','François','Emmanuel','François_Mitterand1','François_Mitterand2','Nicolas']
+    cles = ['jacques_1er_mandat','Jacques_2ème_mandat','Valéry','François','Emmanuel','François_Mitterand_1er_mandat','François_Mitterand_2ème_mandat','Nicolas']
     #dictionnaire = {cles[i]: files_names[i] for i in range(len(cles))}
     dictionnaire ={}
     for i in range(len(cles)):
         dictionnaire[cles[i]] = files_names[i]
-    print("================ dictionnaire =========================",'\n')
+    print("================ Voici la liste des fichiers que vous avez dans 'Speeches' =========================",'\n')
     for cle, valeur in dictionnaire.items():
         print(f"{cle}: {valeur}", end=' \n',)
         print('\n')
@@ -70,7 +70,8 @@ def TF_Macron(directory):
     with open(os.path.join(directory, mac), "r") as mac:
         contenu_mac = mac.read()
         mot_mac = contenu_mac.split()
-        print(mot_mac)
+        nb_motmac = Counter(mot_mac)
+    return nb_motmac
 
 def TF_Mitterand1(directory):
     mitt = "Mitterrand1_mandat.txt"
@@ -149,7 +150,7 @@ def TF_IDF(directory):
     tfidf_chirac2 = {mot: tf_chirac2[mot] * idf_scores.get(mot, 0) for mot in tf_chirac2}
     tfidf_giscard = {mot: tf_giscard[mot] * idf_scores.get(mot, 0) for mot in tf_giscard}
     tfidf_holland = {mot: tf_holland[mot] * idf_scores.get(mot, 0) for mot in tf_holland}
-    tfidf_macron = {mot: tf_macron[mot] * idf_scores.get(mot, 0) for mot in tf_macron}
+    tfidf_macron =  {mot: tf_macron[mot] * idf_scores.get(mot, 0) for mot in tf_macron}
     tfidf_mitterand1 = {mot: tf_mitterand1[mot] * idf_scores.get(mot, 0) for mot in tf_mitterand1}
     tfidf_mitterand2 = {mot: tf_mitterand2[mot] * idf_scores.get(mot, 0) for mot in tf_mitterand2}
     tfidf_sarkozy = {mot: tf_sarkozy[mot] * idf_scores.get(mot, 0) for mot in tf_sarkozy}
@@ -206,11 +207,36 @@ def mots_evoques_par_tous(tfidf_matrix, mots_non_importants):
     mots_evoques.difference_update(mots_non_importants)
     return list(mots_evoques)
 
-def mots_plus_repeter_president(tf_function, directory):
-    tf_president = tf_function(directory)
-    mots_president = tf_president(president)
-    mot_max = max(mots_president, key=mots_president.get)
-    return mot_max, mots_president[mot_max]
+def mots_plus_repeter_president(directory,president):
+    # Calculer les TF pour le président spécifié
+    if president == "Chirac1":
+        tf_president = TF_Chirac1(directory)
+    elif president == "Chirac2":
+        tf_president = TF_Chirac2(directory)
+    elif president == "Giscard":
+        tf_president = TF_Giscard(directory)
+    elif president == "Holland":
+        tf_president = TF_Holland(directory)
+    elif president == "Macron":
+        tf_president = TF_Macron(directory)
+    elif president == "Mitterand1":
+        tf_president = TF_Mitterand1(directory)
+    elif president == "Mitterand2":
+        tf_president = TF_Mitterand2(directory)
+    elif president == "Sarkozy":
+        tf_president = TF_Sarkozy(directory)
+    else:
+        raise ValueError("Président inconnu")
+
+    # Calculer les scores IDF
+    idf_scores = IDF(directory)
+
+    # Calculer les scores TF-IDF pour le président spécifié
+    tfidf_president = {mot: tf_president[mot] * idf_scores.get(mot, 0) for mot in tf_president}
+
+    # Trouver le mot le plus répété
+    mot_max = max(tfidf_president, key=tfidf_president.get)
+    return mot_max, tfidf_president[mot_max]
 
 # ================== Création des fichiers du répertoire "Cleaned" ===========================
 def cleaned(directory):

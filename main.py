@@ -50,9 +50,9 @@ while run == True:
             # Vérifier si le chemin existe
             if os.path.exists(directory):
                 chemin_valide = True
-                print("Chemin d'accès valide.")
+                print("\nChemin d'accès valide.\n")
             else:
-                print("Le chemin d'accès n'est pas valide. Veuillez réessayer.")
+                print("\nLe chemin d'accès n'est pas valide. Veuillez réessayer.\n")
 
         # Accès rapide pour les développeurs
         #directory = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\speeches-20231110'
@@ -63,15 +63,15 @@ while run == True:
         cleaned(directory)
         chemin2_valide = False
 
-        while not chemin_valide:
+        while not chemin2_valide:
             directory1 = input(("Saissisez votre chemin d'accès du dossier 'Cleaned' : "))
 
             # Vérifier si le chemin existe
             if os.path.exists(directory1):
                 chemin2_valide = True
-                print("Chemin d'accès valide.")
+                print("\nChemin d'accès valide.\n")
             else:
-                print("Le chemin d'accès n'est pas valide. Veuillez réessayer.")
+                print("\nLe chemin d'accès n'est pas valide. Veuillez réessayer.\n")
 
         # Accès rapide pour les développeurs
         #directory1 = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\Cleaned'
@@ -98,12 +98,14 @@ while run == True:
                 while mandat_chirac not in ["1","2"]:
                     mandat_chirac = input("1 - 1er Mandat\n2 - 2ème Mandat\n:")
                 if mandat_chirac == "1":
-                    mot_max_chirac, score_max_chirac = mots_plus_repeter_president(TF_Chirac1, "Chirac_mandat1.txt",directory1)
+                    mot_max_chirac, score_max_chirac = mots_plus_repeter_president(directory1,"Chirac_mandat1.txt")
                     print("Le mot le plus répété par Chirac dans 1er Mandat est :", mot_max_chirac)
                 elif mandat_chirac == "2":
-                    mot_max_chirac, score_max_chirac = mots_plus_repeter_president(TF_Chirac2, "Chirac_mandat2.txt",directory1)
+                    mot_max_chirac, score_max_chirac = mots_plus_repeter_president(directory1,"Chirac_mandat2.txt")
                     print("Le mot le plus répété par Chirac dans 2èmé Mandat est :", mot_max_chirac)
-
+        elif debut == "8":
+            break
+            lancement = "5"
         break
         lancement = '5'
 
