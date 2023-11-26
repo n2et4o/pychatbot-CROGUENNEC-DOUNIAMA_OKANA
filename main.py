@@ -36,7 +36,7 @@ while run == True:
             pass
         elif reponse == '2':  # Non # qui permet d'expliquer l'ajout d'un chemin si besoin
             print(
-                "Pour ajouter un chemin d'accès, vous devez aller sur le fichier ou dossier que vous voulez son chemin d'accès, puis faites un clique droit. \nSéléctionnez 'Copy Path' puis 'Absolue path' et il ne vous restera plus qu'à coller le chemin d'accès que vous venez de copier \n")
+                "Pour ajouter un chemin d'accès, vous devez aller sur le fichier ou dossier sur lequel vous voulez son chemin d'accès, puis faites un clique droit. \nSéléctionnez 'Copy Path' puis 'Absolue path' et il ne vous restera plus qu'à coller le chemin d'accès que vous venez de copier \n")
             pass
         elif reponse == '3':  # Retour
             continue
@@ -50,9 +50,9 @@ while run == True:
             # Vérifier si le chemin existe
             if os.path.exists(directory):
                 chemin_valide = True
-                print("Chemin d'accès valide.")
+                print("\nChemin d'accès valide.\n")
             else:
-                print("Le chemin d'accès n'est pas valide. Veuillez réessayer.")
+                print("\nLe chemin d'accès n'est pas valide. Veuillez réessayer.\n")
 
         # Accès rapide pour les développeurs
         #directory = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\speeches-20231110'
@@ -61,32 +61,45 @@ while run == True:
         print_list(files_names)
         # ================== Création des fichiers du répertoire "Cleaned" ===========================
         cleaned(directory)
+        print("Super ! Vous avez réussit. Vous venez de créer des fichiers qui sont dans le dossier cleaned.")
+        firt_stage = input("\n1 - continuer\n2 - Retour\n3 - Quitter\n:")
+        while firt_stage not in ["1","2","3"]:
+            firt_stage = input("\n1 - continuer\n2 - Retour\n3 - Quitter\n:")
+        if firt_stage == "1":
+            pass
+        elif firt_stage == "2":
+            continue
+        elif firt_stage == "3":
+            break
+            lancement = '5'
         chemin2_valide = False
-
-        while not chemin_valide:
+        directory1 = None
+        while not chemin2_valide or directory1 == directory :
             directory1 = input(("Saissisez votre chemin d'accès du dossier 'Cleaned' : "))
 
             # Vérifier si le chemin existe
-            if os.path.exists(directory1):
+            if os.path.exists(directory1) and directory1 != directory:
                 chemin2_valide = True
-                print("Chemin d'accès valide.")
+                print("\nChemin d'accès valide.\n")
+            elif directory1 == directory:
+                print("\nCe chemin d'accès est le même que celui du dossier 'Speeches'. Veuillez réessayer.\n")
             else:
-                print("Le chemin d'accès n'est pas valide. Veuillez réessayer.")
+                print("\nLe chemin d'accès n'est pas valide. Veuillez réessayer.\n")
 
         # Accès rapide pour les développeurs
         #directory1 = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\Cleaned'
 
         tfidf_matrix = TF_IDF(directory1)
-        debut = input("C'est parti !\n Que voulez-vous savoir ?\n 1 - Connaître le mot le plus important lors d'un discours de président.\n2 - Connaître les mots les moins importants lors d'un discours de président\n3 - Connaître les mots les plus répèter par un président.\n 4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
+        debut = input("C'est parti !\nQue voulez-vous savoir ?\n1 - Connaître le mot le plus important lors d'un discours de président.\n2 - Connaître les mots les moins importants lors d'un discours de président\n3 - Connaître les mots les plus répèter par un président.\n4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
         while debut not in ["1","2","3","4","5","6","7","8"]:
             debut = input(":")
         if debut == "1" :
             mot_max, score_max = mot_plus_important(tfidf_matrix)
             print("Le mot le plus important d'un discours de président. :", mot_max)
-            debut = input("C'est parti !\n Que voulez-vous savoir ?\n 1 - Connaître le mot le plus importants lors d'un discours de président.\n2 - Connaître les mots les moins importants lors d'un discours de président\n3 - Connaître les mots les plus répèter par un président.\n 4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
+            debut = input("C'est parti !\n Que voulez-vous savoir ?\n 1 - Connaître le mot le plus importants lors d'un discour de président.\n2 - Connaître les mots les moins importants lors d'un discour de président\n3 - Connaître les mots les plus répèter par un président.\n 4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
         elif debut == "2":
             print("Les Mots les moins importants:", mots_moins_importants(tfidf_matrix))
-            debut = input("C'est parti !\n Que voulez-vous savoir ?\n 1 - Connaître le mot le plus importants lors d'un discours de président.\n2 - Connaître les mots les moins importants lors d'un discours de président\n3 - Connaître les mots les plus répèter par un président.\n 4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
+            debut = input("C'est parti !\n Que voulez-vous savoir ?\n 1 - Connaître le mot le plus importants lors d'un discour de président.\n2 - Connaître les mots les moins importants lors d'un discour de président\n3 - Connaître les mots les plus répèter par un président.\n 4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
         elif debut == "3":
             print("pour quels présidents voulez vous connaître ces mots les plus utilisés ?\n")
             president = input("1 - Chirac\n2 - Giscard\n3 - Holland\n 4 - Macron\n5 - Mitterand\n6 - sarkozy\n:")
@@ -98,12 +111,16 @@ while run == True:
                 while mandat_chirac not in ["1","2"]:
                     mandat_chirac = input("1 - 1er Mandat\n2 - 2ème Mandat\n:")
                 if mandat_chirac == "1":
-                    mot_max_chirac, score_max_chirac = mots_plus_repeter_president(TF_Chirac1, "Chirac_mandat1.txt",directory1)
+                    mot_max_chirac, score_max_chirac = mots_plus_repeter_president(directory1,"Chirac_mandat1.txt")
                     print("Le mot le plus répété par Chirac dans 1er Mandat est :", mot_max_chirac)
                 elif mandat_chirac == "2":
-                    mot_max_chirac, score_max_chirac = mots_plus_repeter_president(TF_Chirac2, "Chirac_mandat2.txt",directory1)
+                    mot_max_chirac, score_max_chirac = mots_plus_repeter_president(directory1,"Chirac_mandat2.txt")
                     print("Le mot le plus répété par Chirac dans 2èmé Mandat est :", mot_max_chirac)
-
+        elif debut == "7":
+            continue
+        elif debut == "8":
+            break
+            lancement = "5"
         break
         lancement = '5'
 
