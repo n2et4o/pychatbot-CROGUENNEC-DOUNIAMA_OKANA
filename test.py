@@ -249,6 +249,15 @@ def langue():
                 time.sleep(1.5)
 '''
 
+'''
+directory = langue()
+files_names = list_of_files(directory, "txt")
+print_list(files_names)
+            # ================== Création des fichiers du répertoire "Cleaned" ===========================
+cleaned(directory)
+#'''
+
+
 
 ''' # calcul de TF avec la formule de TF = nb occurence d'un mot / nb total de mots 
         tf_ch = []
@@ -273,4 +282,375 @@ tf_ch = TF_Chirac1(directory1)
         for mot, score in tf_ch.items():
             print(f"{mot}: {score}")
         idf = IDF(directory1)
+'''
+
+# appel de la fonction pour choisir la langue du menu
+#directory = langue()
+#global run
+#'''
+
+'''
+ print(
+            "Avant d'aller plus loin, vous allez devoir saisir un chemin d'accès pour faciliter mon utilisation. ")
+        reponse = input(
+            "Savez vous comment ajouter un chemin d'accès ?\n1 - Oui\n2 - Non\n3 - Retour\n4 _ Quittez\n:")
+        while reponse not in ['1', '2', '3', '4']:
+            reponse = input(":")
+        if reponse == '1':  # confimation de passage à l'étape suivante
+            pass
+        elif reponse == '2':  # Non # qui permet d'expliquer l'ajout d'un chemin si besoin
+            print(
+                "Pour ajouter un chemin d'accès, vous devez aller sur le fichier ou dossier sur lequel vous voulez son chemin d'accès, puis faites un clique droit. \nSéléctionnez 'Copy Path' puis 'Absolue path' et il ne vous restera plus qu'à coller le chemin d'accès que vous venez de copier \n")
+            pass
+        elif reponse == '3':  # Retour
+            continue
+        elif reponse == '4':  # Quittez
+            break
+
+        chemin_valide = False
+        while not chemin_valide:
+            directory = input("Saissisez votre chemin d'accès du dossier 'speeches' : ")
+
+            # Vérifier si le chemin existe
+            if os.path.exists(directory):
+                chemin_valide = True
+                print("\nChemin d'accès valide.\n")
+            else:
+                print("\nLe chemin d'accès n'est pas valide. Veuillez réessayer.\n")
+
+        # Accès rapide pour les développeurs
+        #directory = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\speeches-20231110'
+
+        files_names = list_of_files(directory, "txt")
+        print_list(files_names)
+        # ================== Création des fichiers du répertoire "Cleaned" ===========================
+        cleaned(directory)
+        print("Félicitation1 ! Vous avez réussit. Vous venez de créer des fichiers qui sont dans le dossier cleaned.")
+        firt_stage = input("\n1 - continuer\n2 - Retour\n3 - Quitter\n:")
+        while firt_stage not in ["1","2","3"]:
+            firt_stage = input("\n1 - continuer\n2 - Retour\n3 - Quitter\n:")
+        if firt_stage == "1":
+            pass
+        elif firt_stage == "2":
+            continue
+        elif firt_stage == "3":
+            print("Au revoir !")
+            break
+            lancement = '5'
+        chemin2_valide = False
+        directory1 = None
+        while not chemin2_valide or directory1 == directory :
+            directory1 = input(("Saissisez votre chemin d'accès du dossier 'Cleaned' : "))
+
+            # Vérifier si le chemin existe
+            if os.path.exists(directory1) and directory1 != directory:
+                chemin2_valide = True
+                print("\nChemin d'accès valide.\n")
+            elif directory1 == directory:
+                print("\nCe chemin d'accès est le même que celui du dossier 'Speeches'. Veuillez réessayer.\n")
+            else:
+                print("\nLe chemin d'accès n'est pas valide. Veuillez réessayer.\n")
+
+        # Accès rapide pour les développeurs
+        #directory1 = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\Cleaned'
+'''
+# ========================= cleaned_first_version ================================
+'''
+    ch = 'Nomination_Chirac1.txt'
+    with open(os.path.join(directory,ch), "r",encoding="utf-8") as Chirac1, open("Cleaned/Chirac_mandat1.txt", "w",encoding = "utf-8") as cm1:
+        mot = Chirac1.readlines()
+        for i in range(len(mot)):
+            # t = Chirac1.readline()
+            for j in range(len(mot[i])):
+                # Passage des lettres en minuscule
+                if mot[i][j] >= 'A' and mot[i][j] <= 'Z':
+                    temp = ord(mot[i][j])
+                    Mot_minuscule = chr(temp + 32)
+                    cm1.write(Mot_minuscule)
+                # suppression de tous les accents
+                elif mot[i][j] == 'ù':
+                    cm1.write('u')
+                elif mot[i][j] == 'ç':
+                    cm1.write('c')
+                elif mot[i][j] == 'à' or mot[i][j] == 'â':
+                    cm1.write('a')
+                elif mot[i][j] in ['é', 'è', 'ê', 'È']:
+                    cm1.write('e')
+                # Délétion de la ponctuation
+                elif mot[i][j] == "-" or mot[i][j] == "'":
+                    cm1.write(" ")
+                elif mot[i][j] >= '!' and mot[i][j] <= '/':
+                    pass
+
+                else:
+                    cm1.write(mot[i][j])
+
+    ch1 = 'Nomination_Chirac2.txt'
+    with open(os.path.join(directory,ch1), "r",encoding = "utf-8") as Chirac2, open("Cleaned/Chirac_mandat2.txt", "w",encoding = "utf-8") as cm2:
+        mot = Chirac2.readlines()
+        for i in range(len(mot)):
+            # t = Chirac1.readline()
+            for j in range(len(mot[i])):
+                # Passage des lettres en minuscule
+                if mot[i][j] >= 'A' and mot[i][j] <= 'Z':
+                    temp = ord(mot[i][j])
+                    Mot_minuscule = chr(temp + 32)
+                    cm2.write(Mot_minuscule)
+                # suppression de tous les accents
+                elif mot[i][j] == 'ù':
+                    cm2.write('u')
+                elif mot[i][j] == 'ç':
+                    cm2.write('c')
+                elif mot[i][j] == 'à' or mot[i][j] == 'â':
+                    cm2.write('a')
+                elif mot[i][j] in ['é', 'è', 'ê', 'È']:
+                    cm2.write('e')
+                # Délétion de la ponctuation
+                elif mot[i][j] == "-" or mot[i][j] == "'":
+                    cm2.write(" ")
+                elif mot[i][j] >= '!' and mot[i][j] <= '/':
+                    pass
+                else:
+                    cm2.write(mot[i][j])
+
+    gd = 'Nomination_Giscard dEstaing.txt'
+    with open(os.path.join(directory,gd), "r",encoding = "utf-8") as Giscard, open("Cleaned/Giscard_mandat.txt", "w",encoding = "utf-8") as gdm:
+        mot = Giscard.readlines()
+        for i in range(len(mot)):
+            # t = Chirac1.readline()
+            for j in range(len(mot[i])):
+                # Passage des lettres en minuscule
+                if mot[i][j] >= 'A' and mot[i][j] <= 'Z':
+                    temp = ord(mot[i][j])
+                    Mot_minuscule = chr(temp + 32)
+                    gdm.write(Mot_minuscule)
+                # suppression de tous les accents
+                elif mot[i][j] == 'ù':
+                    gdm.write('u')
+                elif mot[i][j] == 'ç':
+                    gdm.write('c')
+                elif mot[i][j] == 'à' or mot[i][j] == 'â':
+                    gdm.write('a')
+                elif mot[i][j] in ['é', 'è', 'ê', 'È']:
+                    gdm.write('e')
+                # Délétion de la ponctuation
+                elif mot[i][j] == "-" or mot[i][j] == "'":
+                    gdm.write(" ")
+                elif mot[i][j] >= '!' and mot[i][j] <= '/':
+                    pass
+                else:
+                    gdm.write(mot[i][j])
+
+    h = 'Nomination_Hollande.txt'
+    with open(os.path.join(directory,h), "r",encoding="utf-8") as Holland, open("Cleaned/Holland_mandat.txt", "w",encoding = "utf-8") as hm:
+        mot = Holland.readlines()
+        for i in range(len(mot)):
+            # t = Chirac1.readline()
+            for j in range(len(mot[i])):
+                # Passage des lettres en minuscule
+                if mot[i][j] >= 'A' and mot[i][j] <= 'Z':
+                    temp = ord(mot[i][j])
+                    Mot_minuscule = chr(temp + 32)
+                    hm.write(Mot_minuscule)
+                # suppression de tous les accents
+                elif mot[i][j] == 'ù':
+                    hm.write('u')
+                elif mot[i][j] == 'ç':
+                    hm.write('c')
+                elif mot[i][j] == 'à' or mot[i][j] == 'â':
+                    hm.write('a')
+                elif mot[i][j] in ['é', 'è', 'ê', 'È']:
+                    hm.write('e')
+                # Délétion de la ponctuation
+                elif mot[i][j] == "-" or mot[i][j] == "'":
+                    hm.write(" ")
+                elif mot[i][j] >= '!' and mot[i][j] <= '/':
+                    pass
+                else:
+                    hm.write(mot[i][j])
+
+    ma = 'Nomination_Macron.txt'
+    with open(os.path.join(directory,ma), "r",encoding="utf-8") as Holland, open("Cleaned/Macron_mandat.txt", "w",encoding = "utf-8") as mam:
+        mot = Holland.readlines()
+        for i in range(len(mot)):
+            # t = Chirac1.readline()
+            for j in range(len(mot[i])):
+                # Passage des lettres en minuscule
+                if mot[i][j] >= 'A' and mot[i][j] <= 'Z':
+                    temp = ord(mot[i][j])
+                    Mot_minuscule = chr(temp + 32)
+                    mam.write(Mot_minuscule)
+                # suppression de tous les accents
+                elif mot[i][j] == 'ù':
+                    mam.write('u')
+                elif mot[i][j] == 'ç':
+                    mam.write('c')
+                elif mot[i][j] == 'à' or mot[i][j] == 'â':
+                    mam.write('a')
+                elif mot[i][j] in ['é','è','ê','È'] :
+                    mam.write('e')
+                # Délétion de la ponctuation
+                elif mot[i][j] == "-" or mot[i][j] == "'":
+                    mam.write(" ")
+                elif mot[i][j] >= '!' and mot[i][j] <= '/':
+                    pass
+                else:
+                    mam.write(mot[i][j])
+
+    m = 'Nomination_Mitterrand1.txt'
+    with open(os.path.join(directory,m), "r",encoding="utf-8") as Mitterand, open("Cleaned/Mitterrand1_mandat.txt", "w",encoding = "utf-8") as mm:
+        mot = Mitterand.readlines()
+        for i in range(len(mot)):
+            # t = Chirac1.readline()
+            for j in range(len(mot[i])):
+                # Passage des lettres en minuscule
+                if mot[i][j] >= 'A' and mot[i][j] <= 'Z':
+                    temp = ord(mot[i][j])
+                    Mot_minuscule = chr(temp + 32)
+                    mm.write(Mot_minuscule)
+                # suppression de tous les accents
+                elif mot[i][j] == 'ù':
+                    mm.write('u')
+                elif mot[i][j] == 'ç':
+                    mm.write('c')
+                elif mot[i][j] == '131' and mot[i][j] == '134':
+                    mm.write('a')
+                elif mot[i][j] in ['é', 'è', 'ê', 'È']:
+                    mm.write('e')
+                # Délétion de la ponctuation
+                elif mot[i][j] == "-" or mot[i][j] == "'":
+                    mm.write(" ")
+                elif mot[i][j] >= '!' and mot[i][j] <= '/':
+                    pass
+                else:
+                    mm.write(mot[i][j])
+                    
+    
+    s = 'Nomination_Sarkozy.txt'
+    with open(os.path.join(directory,s), "r") as Sarkozy, open("Cleaned/Sarkozy_mandat.txt", "w",encoding = "utf-8") as sm:
+        mot = Sarkozy.readlines()
+        for i in range(len(mot)):
+            for j in range(len(mot[i])):
+                # Passage des lettres en minuscule
+                if mot[i][j] >= 'A' and mot[i][j] <= 'Z':
+                    temp = ord(mot[i][j])
+                    Mot_minuscule = chr(temp + 32)
+                    sm.write(Mot_minuscule)
+                # suppression de tous les accents
+                elif mot[i][j] == 'ù':
+                    sm.write('u')
+                elif mot[i][j] == 'ç':
+                    sm.write('c')
+                elif mot[i][j] == 'à' or mot[i][j] == 'â':
+                    sm.write('a')
+                elif mot[i][j] == 'ê' or mot[i][j] == 'è' or mot[i][j] == 'é':
+                    sm.write('e')
+                # Délétion de la ponctuation
+                elif mot[i][j] == "-" or mot[i][j] == "'":
+                    sm.write(" ")
+                elif mot[i][j] >= '!' and mot[i][j] <= '/':
+                    pass
+                else:
+                    sm.write(mot[i][j])
+'''
+
+# ============================= TF_IDF ==================================================
+'''
+    # Calculer les TF pour chaque document
+    tf_chirac1 = TF_Chirac1(directory)
+    tf_chirac2 = TF_Chirac2(directory)
+    tf_giscard = TF_Giscard(directory)
+    tf_holland = TF_Holland(directory)
+    tf_macron = TF_Macron(directory)
+    tf_mitterand1 = TF_Mitterand1(directory)
+    tf_mitterand2 = TF_Mitterand2(directory)
+    tf_sarkozy = TF_Sarkozy(directory)
+
+    # Calculer les scores IDF
+    idf_scores = IDF(directory)
+
+    # Calculer les scores TF-IDF pour chaque document
+    tfidf_chirac1 = {mot: tf_chirac1[mot] * idf_scores.get(mot, 0) for mot in tf_chirac1}
+    tfidf_chirac2 = {mot: tf_chirac2[mot] * idf_scores.get(mot, 0) for mot in tf_chirac2}
+    tfidf_giscard = {mot: tf_giscard[mot] * idf_scores.get(mot, 0) for mot in tf_giscard}
+    tfidf_holland = {mot: tf_holland[mot] * idf_scores.get(mot, 0) for mot in tf_holland}
+    tfidf_macron =  {mot: tf_macron[mot] * idf_scores.get(mot, 0) for mot in tf_macron}
+    tfidf_mitterand1 = {mot: tf_mitterand1[mot] * idf_scores.get(mot, 0) for mot in tf_mitterand1}
+    tfidf_mitterand2 = {mot: tf_mitterand2[mot] * idf_scores.get(mot, 0) for mot in tf_mitterand2}
+    tfidf_sarkozy = {mot: tf_sarkozy[mot] * idf_scores.get(mot, 0) for mot in tf_sarkozy}
+
+    # Créer la matrice TF-IDF
+    tfidf_matrix = [tfidf_chirac1, tfidf_chirac2, tfidf_giscard, tfidf_holland,
+                    tfidf_macron, tfidf_mitterand1, tfidf_mitterand2, tfidf_sarkozy]
+
+'''
+# ======================= first_TF ========================
+'''
+def TF_Chirac1(directory):
+    chir = "Chirac_mandat1.txt"
+    with open(os.path.join(directory,chir),"r") as ch:
+        contenu_ch = ch.read()
+        # la fonction split qui nous permet de créer une liste à partir de notre fichier
+        mot_ch = contenu_ch.split()
+        # la fonction counter qui nous permet de determiner le nombre occurrence dans notre liste
+        nb_motc = Counter(mot_ch)
+    return nb_motc
+
+
+def TF_Chirac2(directory):
+    chir2 = "Chirac_mandat2.txt"
+    with open(os.path.join(directory, chir2), "r") as ch2:
+        contenu_ch2 = ch2.read()
+        mot_ch2 = contenu_ch2.split()
+        nb_motch2 = Counter(mot_ch2)
+
+    return nb_motch2
+
+def TF_Giscard(directory):
+    gis = "Giscard_mandat.txt"
+    with open(os.path.join(directory, gis), "r") as gis:
+        contenu_gis = gis.read()
+        mot_gis = contenu_gis.split()
+        nb_motgis = Counter(mot_gis)
+    return nb_motgis
+
+
+def TF_Holland(directory):
+    holl = "Holland_mandat.txt"
+    with open(os.path.join(directory, holl), "r") as holl:
+        contenu_holl = holl.read()
+        mot_holl = contenu_holl.split()
+        nb_motholl = Counter(mot_holl)
+    return nb_motholl
+def TF_Macron(directory):
+    mac = "Macron_mandat.txt"
+    with open(os.path.join(directory, mac), "r") as mac:
+        contenu_mac = mac.read()
+        mot_mac = contenu_mac.split()
+        nb_motmac = Counter(mot_mac)
+    return nb_motmac
+
+def TF_Mitterand1(directory):
+    mitt = "Mitterrand1_mandat.txt"
+    with open(os.path.join(directory, mitt), "r") as mitt:
+        contenu_mitt = mitt.read()
+        mot_mitt = contenu_mitt.split()
+        nb_motmitt = Counter(mot_mitt)
+    return nb_motmitt
+
+def TF_Mitterand2(directory):
+    mitt2 = "Mitterrand2_mandat.txt"
+    with open(os.path.join(directory, mitt2), "r") as mitt2:
+        contenu_mitt2 = mitt2.read()
+        mot_mitt2 = contenu_mitt2.split()
+        nb_motmitt2 = Counter(mot_mitt2)
+    return nb_motmitt2
+def TF_Sarkozy(directory):
+    sarko = "Sarkozy_mandat.txt"
+    with open(os.path.join(directory, sarko), "r") as sarko:
+        contenu_sarko = sarko.read()
+        mot_sarko = contenu_sarko.split()
+        nb_motsarko = Counter(mot_sarko)
+    return nb_motsarko
+    
 '''

@@ -1,18 +1,8 @@
 from fonctions import *
 import datetime as dt
 
-print(dt.datetime.today(),'\n') # Affichage de l'heure de la date au début du programme
-'''
-directory = langue()
-files_names = list_of_files(directory, "txt")
-print_list(files_names)
-            # ================== Création des fichiers du répertoire "Cleaned" ===========================
-cleaned(directory)
-#'''
-# appel de la fonction pour choisir la langue du menu
-#directory = langue()
-#global run
-#'''
+print("\U0001F4C6 ",dt.datetime.today()," \U0001F5D3"'\n') # Affichage de l'heure de la date au début du programme
+
 run = True
 while run == True:
     print("Bonjour !\n")
@@ -21,75 +11,42 @@ while run == True:
     time.sleep(1)
     print("Tapez l'un des chiffres \n")
     time.sleep(1)
-    print("1 - Commençez\n2 - Options\n3 - Comment ça marche ? \n4 - À quoi sert ?\n5 - Quittez\n")
+    print("1 - Commençez\n2 - Options ""\u2699""\n3 - Comment ça marche ? \n4 - À quoi sert ?\n5 - Quittez\n")
     lancement = input(":")
     while lancement not in ['1', '2', '3', '4', '5']:
         lancement = input(":")
     if lancement == '1':
-        print(
-            "Avant d'aller plus loin, vous allez devoir saisir un chemin d'accès pour faciliter mon utilisation. ")
-        reponse = input(
-            "Savez vous comment ajouter un chemin d'accès ?\n1 - Oui\n2 - Non\n3 - Retour\n4 _ Quittez\n:")
-        while reponse not in ['1', '2', '3', '4']:
-            reponse = input(":")
-        if reponse == '1':  # confimation de passage à l'étape suivante
-            pass
-        elif reponse == '2':  # Non # qui permet d'expliquer l'ajout d'un chemin si besoin
-            print(
-                "Pour ajouter un chemin d'accès, vous devez aller sur le fichier ou dossier sur lequel vous voulez son chemin d'accès, puis faites un clique droit. \nSéléctionnez 'Copy Path' puis 'Absolue path' et il ne vous restera plus qu'à coller le chemin d'accès que vous venez de copier \n")
-            pass
-        elif reponse == '3':  # Retour
-            continue
-        elif reponse == '4':  # Quittez
-            break
+        print("saississez le nom de votre dossier \U0001F5C2")
+        path = None
+        error = 0
+        while path == None:
+            name_dossier = input(':')
+            path = trouver_dossier(name_dossier)
+            if path:
+                print(f"Le dossier '{name_dossier}' a été trouvé à l'emplacement : {path}")
 
-        chemin_valide = False
-        while not chemin_valide:
-            directory = input(("Saissisez votre chemin d'accès du dossier 'speeches' : "))
-
-            # Vérifier si le chemin existe
-            if os.path.exists(directory):
-                chemin_valide = True
-                print("\nChemin d'accès valide.\n")
             else:
-                print("\nLe chemin d'accès n'est pas valide. Veuillez réessayer.\n")
+                print(f"Le dossier '{name_dossier}' n'a pas été trouvé.\nVeillez réessayer")
+                error += 1
+                if error == 3:
+                    print("Astuce\nPour vous assurer que bien saisir le nom de votre dossier, il est préférable de copier son nom directement son nom depuis le dossier" )
 
-        # Accès rapide pour les développeurs
-        #directory = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\speeches-20231110'
-
-        files_names = list_of_files(directory, "txt")
-        print_list(files_names)
-        # ================== Création des fichiers du répertoire "Cleaned" ===========================
-        cleaned(directory)
-        print("Super ! Vous avez réussit. Vous venez de créer des fichiers qui sont dans le dossier cleaned.")
-        firt_stage = input("\n1 - continuer\n2 - Retour\n3 - Quitter\n:")
-        while firt_stage not in ["1","2","3"]:
-            firt_stage = input("\n1 - continuer\n2 - Retour\n3 - Quitter\n:")
+        firt_stage = input("\n1 - continuer\n2 - Voir le contenu du dossier\n3 - Retour\n4 - Quitter\n:")
+        while firt_stage not in ["1", "2", "3","4"]:
+            firt_stage = input("\n1 - continuer\n2 - Voir le contenu du dossier\n3 - Retour\n4 - Quitter\n:")
         if firt_stage == "1":
             pass
         elif firt_stage == "2":
-            continue
+            liste = list_of_files(path,"txt")
+            print_list(liste,name_dossier)
         elif firt_stage == "3":
+            continue
+        elif firt_stage == "4":
+            print("Au revoir !")
             break
             lancement = '5'
-        chemin2_valide = False
-        directory1 = None
-        while not chemin2_valide or directory1 == directory :
-            directory1 = input(("Saissisez votre chemin d'accès du dossier 'Cleaned' : "))
-
-            # Vérifier si le chemin existe
-            if os.path.exists(directory1) and directory1 != directory:
-                chemin2_valide = True
-                print("\nChemin d'accès valide.\n")
-            elif directory1 == directory:
-                print("\nCe chemin d'accès est le même que celui du dossier 'Speeches'. Veuillez réessayer.\n")
-            else:
-                print("\nLe chemin d'accès n'est pas valide. Veuillez réessayer.\n")
-
-        # Accès rapide pour les développeurs
-        #directory1 = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\Cleaned'
-
-        tfidf_matrix = TF_IDF(directory1)
+        cleaned_directory(path)
+        tfidf_matrix = TF_IDF(path)
         debut = input("C'est parti !\nQue voulez-vous savoir ?\n1 - Connaître le mot le plus important lors d'un discours de président.\n2 - Connaître les mots les moins importants lors d'un discours de président\n3 - Connaître les mots les plus répèter par un président.\n4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
         while debut not in ["1","2","3","4","5","6","7","8"]:
             debut = input(":")
@@ -98,7 +55,7 @@ while run == True:
             print("Le mot le plus important d'un discours de président. :", mot_max)
             debut = input("C'est parti !\n Que voulez-vous savoir ?\n 1 - Connaître le mot le plus importants lors d'un discour de président.\n2 - Connaître les mots les moins importants lors d'un discour de président\n3 - Connaître les mots les plus répèter par un président.\n 4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
         elif debut == "2":
-            print("Les Mots les moins importants:", mots_moins_importants(tfidf_matrix))
+            print("Le mot le moins important:", mots_moins_importants(tfidf_matrix))
             debut = input("C'est parti !\n Que voulez-vous savoir ?\n 1 - Connaître le mot le plus importants lors d'un discour de président.\n2 - Connaître les mots les moins importants lors d'un discour de président\n3 - Connaître les mots les plus répèter par un président.\n 4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
         elif debut == "3":
             print("pour quels présidents voulez vous connaître ces mots les plus utilisés ?\n")
@@ -117,7 +74,9 @@ while run == True:
                     mot_max_chirac, score_max_chirac = mots_plus_repeter_president(directory1,"Chirac_mandat2.txt")
                     print("Le mot le plus répété par Chirac dans 2èmé Mandat est :", mot_max_chirac)
         elif debut == "7":
+            print('\n')
             continue
+            pass
         elif debut == "8":
             break
             lancement = "5"
@@ -177,16 +136,3 @@ while run == True:
         continue
     elif lancement == '5':
         run = False
-
-
-        '''
-
-        #directory = 'C:\\Users\\20220848\\PycharmProjects\\Project_with_Liam\\speeches-20231110'
-
-
-
-    #'''
-#'''
-
-
-#'''
