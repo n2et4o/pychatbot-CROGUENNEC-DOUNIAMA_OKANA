@@ -1,6 +1,6 @@
 from fonctions import *
 import datetime as dt
-
+#Liam CROGUENNEC et Joss DOUNIAMA OKANA
 print("\U0001F4C6 ",dt.datetime.today()," \U0001F5D3"'\n') # Affichage de l'heure de la date au début du programme
 
 run = True
@@ -11,7 +11,7 @@ while run == True:
     time.sleep(1)
     print("Tapez l'un des chiffres \n")
     time.sleep(1)
-    print("1 - Commençez\n2 - Options ""\u2699""\n3 - Comment ça marche ? \n4 - À quoi sert ?\n5 - Quittez\n")
+    print("1 - Commençez \U0001F3C1 \n2 - Options \u2699 \n3 - Comment ça marche ? \U0001F4D6 \n4 - À quoi ça sert ? \U0001F914 \n5 - Quittez \u274C \n")
     lancement = input(":")
     while lancement not in ['1', '2', '3', '4', '5']:
         lancement = input(":")
@@ -24,7 +24,6 @@ while run == True:
             path = trouver_dossier(name_dossier)
             if path:
                 print(f"Le dossier '{name_dossier}' a été trouvé à l'emplacement : {path}")
-
             else:
                 print(f"Le dossier '{name_dossier}' n'a pas été trouvé.\nVeillez réessayer")
                 error += 1
@@ -39,25 +38,61 @@ while run == True:
         elif firt_stage == "2":
             liste = list_of_files(path,"txt")
             print_list(liste,name_dossier)
+            print('\n')
+            press = None
+            while press not in [" "]:
+                time.sleep(3)
+                press = input("")
         elif firt_stage == "3":
             continue
         elif firt_stage == "4":
             print("Au revoir !")
             break
             lancement = '5'
+
         cleaned_directory(path)
-        tfidf_matrix = TF_IDF(path)
-        debut = input("C'est parti !\nQue voulez-vous savoir ?\n1 - Connaître le mot le plus important lors d'un discours de président.\n2 - Connaître les mots les moins importants lors d'un discours de président\n3 - Connaître les mots les plus répèter par un président.\n4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
-        while debut not in ["1","2","3","4","5","6","7","8"]:
+        path_cleaned = trouver_dossier("Cleaned")
+        tfidf_matrix = TF_IDF(path_cleaned)
+        print(tfidf_matrix)
+        time.sleep(1)
+        debut = input("C'est parti !\nQue souhaitez vous ?\n1 - Posez une question ?\n2 - Connaître le mot le plus important lors d'un discours de président.\n3 - Connaître les mots les moins importants lors d'un discours de président\n4 - Connaître les mots les plus répèter par un président.\n5 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n6 - Connaître le premier président ayant aborder un sujet.\n7 - Connaître les mots prononcés par tous les présidents.\n8 - Retour.\n9 - Quittez.\n:")
+        while debut not in ["1","2","3","4","5","6","7","8","9"]:
             debut = input(":")
-        if debut == "1" :
+        if debut == "1":
+            print("Saississez votre question ")
+            question =input(":")
+            tokquestion = tokenizer_question(question)
+            chemins_dossiers_corpus = lister_dossiers()
+            termes_communs = rechercher_termes_dans_corpus(tokquestion, chemins_dossiers_corpus)
+            #print("Termes communs dans le corpus :", termes_communs) #test de verification
+            scores_idf = IDF(path_cleaned)
+            #print(scores_idf) #test de verification
+            for filename in os.listdir(path_cleaned):
+                # Calculer les TF pour chaque document
+                scores_tf = TF(path_cleaned, filename)
+            #print(scores_tf) #test de verification
+            # Calculer le vecteur TF-IDF de la question
+            vecteur_tfidf_question = calculer_vecteur_tfidf_question(tokquestion, scores_tf, scores_idf)
+            print("Vecteur TF-IDF de la question :", vecteur_tfidf_question)
+            # Obtenez les valeurs (values) de la matrice TF-IDF
+            vecteur_document = []
+            for i, vecteur_tfidf_document in enumerate(tfidf_matrix):
+                #print(f"Document {i + 1} - Valeurs TF-IDF : {list(vecteur_tfidf_document.values())}")
+                vecteur_document.append(list(vecteur_tfidf_document.values()))
+            #print(vecteur_document)
+            most_relevant_document, relevant_folder = find_most_relevant_document(tfidf_matrix, question_vector,file_names)
+            # Afficher le résultat
+            print("Le document le plus pertinent est :", most_relevant_document)
+            print("Son équivalent dans le répertoire « ./speeches » est :", relevant_folder)
+
+        if debut == "2" :
             mot_max, score_max = mot_plus_important(tfidf_matrix)
             print("Le mot le plus important d'un discours de président. :", mot_max)
-            debut = input("C'est parti !\n Que voulez-vous savoir ?\n 1 - Connaître le mot le plus importants lors d'un discour de président.\n2 - Connaître les mots les moins importants lors d'un discour de président\n3 - Connaître les mots les plus répèter par un président.\n 4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
-        elif debut == "2":
-            print("Le mot le moins important:", mots_moins_importants(tfidf_matrix))
-            debut = input("C'est parti !\n Que voulez-vous savoir ?\n 1 - Connaître le mot le plus importants lors d'un discour de président.\n2 - Connaître les mots les moins importants lors d'un discour de président\n3 - Connaître les mots les plus répèter par un président.\n 4 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n5 - Connaître le premier président ayant aborder un sujet.\n6 - Connaître les mots prononcés par tous les présidents.\n7 - Retour.\n8 - Quittez.\n:")
+            debut = input("Que souhaitez vous ?\n1 - Posez une question ?\n2 - Connaître le mot le plus important lors d'un discours de président.\n3 - Connaître les mots les moins importants lors d'un discours de président\n4 - Connaître les mots les plus répèter par un président.\n5 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n6 - Connaître le premier président ayant aborder un sujet.\n7 - Connaître les mots prononcés par tous les présidents.\n8 - Retour.\n9 - Quittez.\n:")
         elif debut == "3":
+            print("Le mot le moins important:", mots_moins_importants(tfidf_matrix))
+            debut = input("Que souhaitez vous ?\n1 - Posez une question ?\n2 - Connaître le mot le plus important lors d'un discours de président.\n3 - Connaître les mots les moins importants lors d'un discours de président\n4 - Connaître les mots les plus répèter par un président.\n5 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n6 - Connaître le premier président ayant aborder un sujet.\n7 - Connaître les mots prononcés par tous les présidents.\n8 - Retour.\n9 - Quittez.\n:")
+        elif debut == "4":
             print("pour quels présidents voulez vous connaître ces mots les plus utilisés ?\n")
             president = input("1 - Chirac\n2 - Giscard\n3 - Holland\n 4 - Macron\n5 - Mitterand\n6 - sarkozy\n:")
             while president not in ["1","2","3","4","5","6"] :
@@ -73,11 +108,11 @@ while run == True:
                 elif mandat_chirac == "2":
                     mot_max_chirac, score_max_chirac = mots_plus_repeter_president(directory1,"Chirac_mandat2.txt")
                     print("Le mot le plus répété par Chirac dans 2èmé Mandat est :", mot_max_chirac)
-        elif debut == "7":
+        elif debut == "8":
             print('\n')
             continue
             pass
-        elif debut == "8":
+        elif debut == "9":
             break
             lancement = "5"
         break
@@ -111,7 +146,7 @@ while run == True:
             elif langue == '4':
                 continue
         elif option == '2':
-            print("Crédit du programme")
+            print("Crédit du programme ")
             time.sleep(1)
             print("réalisé par : \n")
             time.sleep(1)
@@ -132,7 +167,7 @@ while run == True:
         print("\nCommençez puis suivez les instructions. \n")
         continue
     elif lancement == '4':
-        print("\nJe sers à donner des informations sur les discours de tous les présidents de la cinquième République. \n")
+        print("\nJe sers à donner des informations sur les discours de tous les présidents de la cinquième République et je peux répondre à certains questions sur les sujets contenus dans votre bibliothèque.\n")
         continue
     elif lancement == '5':
         run = False

@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import time
 import math
@@ -10,6 +11,23 @@ def list_of_files(directory, extension):
     if filename.endswith(extension):
         files_names.append(filename)
  return files_names
+
+def lister_dossiers():
+    repertoire_racine = os.getcwd()
+    # Dossiers à exclure
+    dossiers_a_exclure = ["__pycache__", ".git", ".idea"]
+    # Initialiser la liste des chemins de dossiers
+    chemins_dossiers = []
+
+    # Parcourir les éléments du répertoire racine
+    for element in os.listdir(repertoire_racine):
+        chemin_element = os.path.join(repertoire_racine, element)
+
+        # Vérifier si l'élément est un dossier
+        if os.path.isdir(chemin_element) and element not in dossiers_a_exclure:
+            chemins_dossiers.append(chemin_element)
+
+    return chemins_dossiers
 
 def trouver_dossier(nom_dossier):
     # Récupérer le répertoire racine du projet
@@ -23,18 +41,21 @@ def trouver_dossier(nom_dossier):
     # Si le dossier n'est pas trouvé, retourner None
     return None
 
-def print_list(files_names,name_dossier):
-# ========== changement en dictionnaire =============== #
-    # Associations de chaques prénoms à une présisents par dictionnaire
 
-    #dictionnaire = {cles[i]: files_names[i] for i in range(len(cles))}
-    dictionnaire ={}
-    for i in range(files_names):
-        dictionnaire[files_names[i]] = files_names[i]
-    print(f"================ Voici la liste des fichiers qui sont dans {name_dossier} =========================",'\n')
-    for cle, valeur in dictionnaire.items():
-        print(f"{cle}: {valeur}", end=' \n',)
-        print('\n')
+def print_list(files_names, name_dossier):
+    # Utiliser la fonction trouver_dossier pour obtenir le chemin du dossier
+    dossier_path = trouver_dossier(name_dossier)
+
+    if dossier_path:
+        # Afficher l'en-tête
+        print(f"================ Voici la liste des fichiers qui sont dans {name_dossier} =========================",'\n')
+
+        # Afficher chaque fichier avec son chemin complet
+        for file_name in files_names:
+            file_path = os.path.join(dossier_path, file_name)
+            print(f"{file_name}") #{file_path}")
+    else:
+        print(f"Le dossier {name_dossier} n'a pas été trouvé.")
 
 
 # ============ Création des TF =============#
@@ -76,7 +97,7 @@ def IDF(directory):
     # Calculer le score IDF pour chaque mot
     idf_scores = {}
     for mot, occ in occ_doc.items():
-        idf_scores[mot] = math.log(total_doc / (occ + 1))  # Éviter la division par zéro
+        idf_scores[mot] = math.log10(total_doc / (occ + 1))  # Éviter la division par zéro
 
     return idf_scores
 
@@ -101,6 +122,7 @@ def TF_IDF(directory):
         tfidf_matrix.append(tfidf_document)
 
     return tfidf_matrix
+
 
 # ================== Création des fichiers du répertoire "Cleaned" ===========================
 def cleaned_files(input_path,output_path):
@@ -191,13 +213,12 @@ def mots_evoques_par_tous(tfidf_matrix, mots_non_importants):
     mots_evoques.difference_update(mots_non_importants)
     return list(mots_evoques)
 
-def mots_plus_repeter_president(directory,president):
-
-
+def mots_plus_repeter_president(directory, president):
     # Calculer les scores IDF
     idf_scores = IDF(directory)
 
     # Calculer les scores TF-IDF pour le président spécifié
+    tf_president = TF(directory, president)
     tfidf_president = {mot: tf_president[mot] * idf_scores.get(mot, 0) for mot in tf_president}
 
     # Trouver le mot le plus répété
@@ -205,6 +226,117 @@ def mots_plus_repeter_president(directory,president):
     return mot_max, tfidf_president[mot_max]
 
 
+# ========================== Fonctions de la 2éme et 3éme partie du projet ==========================
+
+def tokenizer_question(texte_question):
+    # Supprimer la ponctuation et convertir en minuscules
+    #re(expressions régulières) pour supprimer la ponctuation du texte et la méthode
+    texte_question = re.sub(r'[^\w\s]', '', texte_question.lower())
+
+    # Diviser le texte en mots
+    mots_question = texte_question.split()
+
+    return mots_question
+
+
+def rechercher_termes_dans_corpus(mots_question, chemin_corpus):
+    # Initialiser l'ensemble de mots du corpus
+    mots_corpus = set()
+
+    # Parcourir tous les fichiers dans les dossiers du corpus
+    for dossier in chemin_corpus:
+        for fichier in os.listdir(dossier):
+            chemin_fichier = os.path.join(dossier, fichier)
+
+            # Lire le contenu du fichier et le tokeniser
+            with open(chemin_fichier, 'r', encoding='utf-8') as file:
+                contenu_fichier = file.read()
+                mots_document = tokenizer_question(contenu_fichier)
+                mots_corpus.update(mots_document)
+
+    # Trouver l'intersection entre les mots de la question et les mots du corpus
+    termes_communs = set(mots_question) & mots_corpus
+
+    return termes_communs
+
+# Fonction pour calculer le vecteur TF-IDF de la question
+def calculer_vecteur_tfidf_question(mots_question, scores_tf, scores_idf):
+    # Initialiser le vecteur TF-IDF de la question
+    vecteur_tfidf_question = []
+
+    # Calculer le score TF pour chaque mot de la question
+    for mot in mots_question:
+        tf_score = scores_tf.get(mot, 0)
+        vecteur_tfidf_question.append(tf_score)
+
+    # Multiplier les scores TF par les scores IDF pour obtenir le vecteur TF-IDF final
+    vecteur_tfidf_question = [tf * scores_idf.get(mot, 0) for tf, mot in zip(vecteur_tfidf_question, mots_question)]
+
+    return vecteur_tfidf_question
+
+# Fonction pour calculer le produit scalaire de deux vecteurs
+def dot_product(vector_a, vector_b):
+    return sum(a * b for a, b in zip(vector_a, vector_b))
+
+# Fonction pour calculer la norme d'un vecteur
+def vector_norm(vector):
+    return math.sqrt(sum(x ** 2 for x in vector))
+
+# Fonction pour calculer la similarité de cosinus entre deux vecteurs
+def cosine_similarity(vector_a, vector_b):
+    dot_prod = dot_product(vector_a, vector_b)
+    norm_a = vector_norm(vector_a)
+    norm_b = vector_norm(vector_b)
+
+    # Éviter une division par zéro
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+
+    similarity = dot_prod / (norm_a * norm_b)
+    return similarity
+
+# Fonction pour trouver le document le plus similaire
+def find_most_similar_document(question_vector, tfidf_matrix):
+    # Initialiser la similarité maximale et l'indice du document correspondant
+    max_similarity = -1
+    most_similar_index = -1
+
+    # Parcourir chaque ligne de la matrice TF-IDF
+    for i, doc_vector in enumerate(tfidf_matrix):
+        # Calculer la similarité avec le vecteur de la question
+        similarity = cosine_similarity(question_vector, doc_vector)
+
+        # Mettre à jour le document le plus similaire si nécessaire
+        if similarity > max_similarity:
+            max_similarity = similarity
+            most_similar_index = i
+
+    return most_similar_index, max_similarity
+
+def find_most_relevant_document(tfidf_matrix, question_vector, file_names):
+    # Initialiser la similarité maximale et le nom du document correspondant
+    max_similarity = -1
+    most_relevant_document = None
+
+    # Parcourir chaque ligne de la matrice TF-IDF et les noms de fichiers correspondants
+    for i, (doc_vector, file_name) in enumerate(zip(tfidf_matrix, file_names)):
+        # Calculer la similarité avec le vecteur de la question
+        similarity = cosine_similarity(question_vector, doc_vector)
+
+        # Mettre à jour le document le plus pertinent si nécessaire
+        if similarity > max_similarity:
+            max_similarity = similarity
+            most_relevant_document = file_name
+
+    # Trouver le dossier équivalent dans "./speeches"
+    relevant_folder = find_folder(most_relevant_document)
+    return most_relevant_document, relevant_folder
+
+def find_folder(file_name):
+    # Récupérer le répertoire racine du projet
+    repertoire_racine = os.getcwd()
+    # Trouver le répertoire "./speeches" équivalent pour le fichier donné
+    return os.path.join(repertoire_racine, "speeches-20231110", file_name)
 
 
 # ================================= Les nouvelles différentes langues du menu ===================================
