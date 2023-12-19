@@ -37,7 +37,6 @@ while run == True:
                 scores_tf = TF(path_cleaned, filename)
             # Calculer le vecteur TF-IDF de la question
             vecteur_tfidf_question = calculer_vecteur_tfidf_question(tokquestion, scores_tf, scores_idf)
-            print("Vecteur TF-IDF de la question :", vecteur_tfidf_question)
             # Obtenez les valeurs (values) de la matrice TF-IDF
             vecteur_document = []
             for i, vecteur_tfidf_document in enumerate(tfidf_matrix):
@@ -131,13 +130,13 @@ while run == True:
         elif debut == "6" :
             print("Sur quel sujet aimeriez-vous savoir quel président l'a abordé en premier ?\nSaississez votre sujet")
             sujet = input(":")
-            resultat_president = premier_president_parlant_de(tfidf_matrix, mot)
+            resultat_president = premier_president_parlant_de(tfidf_matrix, sujet)
             # Affichez les résultats
             if isinstance(resultat_president, str):
                 print(resultat_president)  # Aucun président n'a parlé de la Nation.
             else:
                 president_max, score_max = resultat_president
-                print(f"Le permier président qui a abordéle '{mot}' est {president_max}.")
+                print(f"Le permier président qui a abordé le '{sujet}' est {president_max}.")
             debut = input("\nQue souhaitez vous ?\n1 - Posez une question ?\n2 - Connaître le mot le plus important lors d'un discours de président.\n3 - Connaître les mots les moins importants lors d'un discours de président\n4 - Connaître les mots les plus répèter par un président.\n5 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n6 - Connaître le premier président ayant aborder un sujet.\n7 - Connaître les mots prononcés par tous les présidents.\n8 - Retour.\n9 - Quittez.\n:")
             while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 debut = input(":")
@@ -159,6 +158,8 @@ while run == True:
         elif debut == "9":
             print("Au revoir !")
             sys.exit()
+
+        lancement = "1"
 
 
     elif lancement == '2':
