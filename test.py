@@ -654,3 +654,35 @@ def TF_Sarkozy(directory):
     return nb_motsarko
     
 '''
+
+'''print("saississez le nom de votre dossier \U0001F5C2")
+        path = None
+        error = 0
+        while path == None:
+            name_dossier = input(':')
+            path = trouver_dossier(name_dossier)
+            if path:
+                print(f"Le dossier '{name_dossier}' a été trouvé à l'emplacement : {path}")
+            else:
+                print(f"Le dossier '{name_dossier}' n'a pas été trouvé.\nVeillez réessayer")
+                error += 1
+                if error == 3:
+                    print("Astuce\nPour vous assurer que bien saisir le nom de votre dossier, il est préférable de copier son nom directement son nom depuis le dossier" )
+
+        firt_stage = input("\n1 - continuer\n2 - Voir le contenu du dossier\n3 - Retour\n4 - Quitter\n:")
+        while firt_stage not in ["1", "2", "3","4"]:
+            firt_stage = input("\n1 - continuer\n2 - Voir le contenu du dossier\n3 - Retour\n4 - Quitter\n:")
+        if firt_stage == "1":
+            pass
+        elif firt_stage == "2":
+            liste = list_of_files(path,"txt")
+            print_list(liste,name_dossier)
+            time.sleep(3)
+            print('\n')
+        elif firt_stage == "3":
+            continue
+        elif firt_stage == "4":
+            print("Au revoir !")
+            break
+            lancement = '5'
+            '''

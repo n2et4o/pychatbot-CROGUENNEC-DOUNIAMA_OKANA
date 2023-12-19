@@ -213,17 +213,53 @@ def mots_evoques_par_tous(tfidf_matrix, mots_non_importants):
     mots_evoques.difference_update(mots_non_importants)
     return list(mots_evoques)
 
+def mots_non_importants(tfidf_matrix, seuil=0.1):
+    # Initialiser un dictionnaire pour stocker la somme des scores IDF de chaque mot
+    somme_idf = {}
+
+    # Parcourir chaque document dans la matrice TF-IDF
+    for tfidf_dict in tfidf_matrix:
+        for mot, score in tfidf_dict.items():
+            # Ajouter le score IDF du mot à la somme
+            somme_idf[mot] = somme_idf.get(mot, 0) + score
+
+    # Calculer la moyenne des scores IDF pour chaque mot
+    moyenne_idf = {mot: score / len(tfidf_matrix) for mot, score in somme_idf.items()}
+
+    # Filtrer les mots en fonction du seuil
+    mots_filtres = [mot for mot, score in moyenne_idf.items() if score < seuil]
+
+    return mots_filtres
+
 def mots_plus_repeter_president(directory, president):
+    # Obtenez la liste des fichiers dans le répertoire
+    files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+
+    # Initialiser un dictionnaire pour stocker les scores TF-IDF de chaque mot
+    tfidf_scores = {}
+
     # Calculer les scores IDF
     idf_scores = IDF(directory)
 
-    # Calculer les scores TF-IDF pour le président spécifié
-    tf_president = TF(directory, president)
-    tfidf_president = {mot: tf_president[mot] * idf_scores.get(mot, 0) for mot in tf_president}
+    # Parcourir tous les fichiers pour le président spécifié
+    for file in files:
+        # Ignorer le fichier du président actuel
+        if file != president:
+            # Calculer les scores TF pour chaque fichier
+            tf_file = TF(directory, file)
 
-    # Trouver le mot le plus répété
-    mot_max = max(tfidf_president, key=tfidf_president.get)
-    return mot_max, tfidf_president[mot_max]
+            # Calculer les scores TF-IDF pour chaque fichier
+            tfidf_file = {mot: tf_file[mot] * idf_scores.get(mot, 0) for mot in tf_file}
+
+            # Mettre à jour le dictionnaire des scores TF-IDF globaux
+            for mot in tfidf_file:
+                tfidf_scores[mot] = tfidf_scores.get(mot, 0) + tfidf_file[mot]
+
+    # Trouver le(s) mot(s) le(s) plus répété(s)
+    mots_max = [mot for mot in tfidf_scores if tfidf_scores[mot] == max(tfidf_scores.values())]
+    score_max = tfidf_scores[mots_max[0]]
+
+    return mots_max, score_max
 
 
 # ========================== Fonctions de la 2éme et 3éme partie du projet ==========================
@@ -314,9 +350,9 @@ def find_most_similar_document(question_vector, tfidf_matrix):
     return most_similar_index, max_similarity
 
 def find_most_relevant_document(tfidf_matrix, question_vector, file_names):
-    # Initialiser la similarité maximale et le nom du document correspondant
+    # Initialiser la similarité maximale et l'indice du document correspondant
     max_similarity = -1
-    most_relevant_document = None
+    most_relevant_index = -1
 
     # Parcourir chaque ligne de la matrice TF-IDF et les noms de fichiers correspondants
     for i, (doc_vector, file_name) in enumerate(zip(tfidf_matrix, file_names)):
@@ -326,7 +362,10 @@ def find_most_relevant_document(tfidf_matrix, question_vector, file_names):
         # Mettre à jour le document le plus pertinent si nécessaire
         if similarity > max_similarity:
             max_similarity = similarity
-            most_relevant_document = file_name
+            most_relevant_index = i
+
+    # Utiliser l'indice trouvé pour obtenir le nom du document le plus pertinent
+    most_relevant_document = file_names[most_relevant_index]
 
     # Trouver le dossier équivalent dans "./speeches"
     relevant_folder = find_folder(most_relevant_document)
@@ -337,6 +376,34 @@ def find_folder(file_name):
     repertoire_racine = os.getcwd()
     # Trouver le répertoire "./speeches" équivalent pour le fichier donné
     return os.path.join(repertoire_racine, "speeches-20231110", file_name)
+
+def find_max_tfidf_word(question_vector):
+    # Trouver la clé du mot avec le score TF-IDF le plus élevé dans le vecteur de la question
+    max_tfidf_word = max(question_vector, key=question_vector.get)
+    return max_tfidf_word
+
+
+def generate_response(document_path, max_tfidf_word):
+    # Ouvrir le document pertinent et lire son contenu
+    with open(document_path, 'r', encoding='utf-8') as file:
+        document_content = file.read()
+
+    # Diviser le document en phrases
+    sentences = document_content.split('.')
+
+    # Parcourir les phrases pour trouver la première occurrence du mot avec le score TF-IDF le plus élevé
+    for sentence in sentences:
+        if max_tfidf_word in sentence.lower():
+            # Vous pouvez ajuster le nombre de mots avant et après le mot recherché pour obtenir un contexte plus large
+            context_length = 10
+            index_max_tfidf_word = sentence.lower().index(max_tfidf_word)
+            start_index = max(0, index_max_tfidf_word - context_length)
+            end_index = min(len(sentence), index_max_tfidf_word + len(max_tfidf_word) + context_length)
+            context = sentence[start_index:end_index].strip()
+
+            return context
+
+    return "Aucune phrase trouvée."
 
 
 # ================================= Les nouvelles différentes langues du menu ===================================
@@ -431,10 +498,8 @@ def new_menu_english():
                     print('\n')
                     continue
                 elif debut == "8":
-                    break
-                    lancement = "5"
-                break
-                lancement = '5'
+                    sys.exit()
+
 
         elif lancement == '2':
             option = input("Type a number\n1 - Language\n2 - Credit\n3 - Return\n:")
@@ -483,11 +548,7 @@ def new_menu_english():
             print("\nAvailable soon. \n")
             continue
         elif lancement == '5':
-            #run1 = False
-            #run = False
-            #run2 = False
             sys.exit()
-            return '5'
         break
 
 
