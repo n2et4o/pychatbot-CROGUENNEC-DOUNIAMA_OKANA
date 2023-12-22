@@ -97,7 +97,10 @@ def IDF(directory):
     # Calculer le score IDF pour chaque mot
     idf_scores = {}
     for mot, occ in occ_doc.items():
-        idf_scores[mot] = math.log10(total_doc / (occ + 1))  # Éviter la division par zéro
+        if occ != 0 :
+            idf_scores[mot] = math.log10(total_doc / occ)
+        else :
+            idf_scores[mot] = 0
 
     return idf_scores
 
