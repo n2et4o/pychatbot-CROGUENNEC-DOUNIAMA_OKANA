@@ -25,7 +25,7 @@ while run == True:
         debut = input("C'est parti !\nQue souhaitez vous ?\n1 - Posez une question ?\n2 - Connaître le mot le plus important lors d'un discours de président.\n3 - Connaître les mots les moins importants lors d'un discours de président\n4 - Connaître les mots les plus répèter par un président.\n5 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n6 - Connaître le premier président ayant aborder un sujet.\n7 - Connaître les mots prononcés par tous les présidents.\n8 - Retour.\n9 - Quittez.\n:")
         while debut not in ["1","2","3","4","5","6","7","8","9"]:
             debut = input(":")
-        if debut == "1":
+        while debut == "1":
             print("\nSaississez votre question ")
             question =input(":")
             tokquestion = tokenizer_question(question)
@@ -57,20 +57,20 @@ while run == True:
             while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 debut = input(":")
 
-        elif debut == "2" :
+        while debut == "2" :
             mot_max, score_max = mot_plus_important(tfidf_matrix)
             print("Le mot le plus important d'un discours de président. :", mot_max)
             debut = input("\nQue souhaitez vous ?\n1 - Posez une question ?\n2 - Connaître le mot le plus important lors d'un discours de président.\n3 - Connaître les mots les moins importants lors d'un discours de président\n4 - Connaître les mots les plus répèter par un président.\n5 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n6 - Connaître le premier président ayant aborder un sujet.\n7 - Connaître les mots prononcés par tous les présidents.\n8 - Retour.\n9 - Quittez.\n:")
             while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 debut = input(":")
 
-        elif debut == "3":
+        while debut == "3":
             print("Le mot le moins important:", mots_moins_importants(tfidf_matrix))
             debut = input("\nQue souhaitez vous ?\n1 - Posez une question ?\n2 - Connaître le mot le plus important lors d'un discours de président.\n3 - Connaître les mots les moins importants lors d'un discours de président\n4 - Connaître les mots les plus répèter par un président.\n5 - Connaître le nom du président ayant répèter le plus un mot en particulier.\n6 - Connaître le premier président ayant aborder un sujet.\n7 - Connaître les mots prononcés par tous les présidents.\n8 - Retour.\n9 - Quittez.\n:")
             while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 debut = input(":")
 
-        elif debut == "4":
+        while debut == "4":
             print("pour quels présidents voulez vous connaître ces mots les plus utilisés ?\n")
             president = input("1 - Chirac\n2 - Giscard\n3 - Holland\n 4 - Macron\n5 - Mitterand\n6 - sarkozy\n:")
             while president not in ["1","2","3","4","5","6"] :
@@ -113,7 +113,7 @@ while run == True:
             while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 debut = input(":")
 
-        elif debut == "5":
+        while debut == "5":
             print("quel mot en particulier a été le plus utilisé par un président, que vous voulez savoir\nSaississez votre mot")
             mot = input(":")
             resultat_president = president_parlant_de_la_nation(tfidf_matrix, mot)
@@ -127,7 +127,7 @@ while run == True:
             while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 debut = input(":")
 
-        elif debut == "6" :
+        while debut == "6" :
             print("Sur quel sujet aimeriez-vous savoir quel président l'a abordé en premier ?\nSaississez votre sujet")
             sujet = input(":")
             resultat_president = premier_president_parlant_de(tfidf_matrix, sujet)
@@ -141,7 +141,7 @@ while run == True:
             while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 debut = input(":")
 
-        elif debut == "7" :
+        while debut == "7" :
             mots_non_importants_resultat = ['le', 'la', 'les', 'un', 'une', 'des','à', 'de', 'pour', 'avec', 'sans', 'chez', 'dans', 'sur', 'sous', 'entre', 'devant', 'derrière','mon', 'ma', 'mes', 'ton', 'ta', 'tes', 'son', 'sa', 'ses', 'notre', 'notre', 'nos', 'votre', 'votre', 'vos', 'leur', 'leur', 'leurs','ce', 'cette', 'ces', 'cet','et','que','qu','en','se',"j","l",]
             resultat_mots_evoques = mots_evoques_par_tous(tfidf_matrix, mots_non_importants_resultat)
             # Affichez les résultats
@@ -151,7 +151,7 @@ while run == True:
             while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 debut = input(":")
 
-        elif debut == "8":
+        if  debut == "8":
             print('\n')
             continue
 

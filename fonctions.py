@@ -631,10 +631,11 @@ def new_menu_english():
             print("\nStart, then follow the instructions. \n")
             continue
         elif lancement == '4':
-            print("\nAvailable soon. \n")
+            print("\nI provide information on the speeches of all the presidents of the Fifth Republic, and can answer questions on subjects in your library.\n")
             continue
         elif lancement == '5':
             sys.exit()
+            return "5"
         break
 
 
@@ -647,7 +648,7 @@ def new_menu_spanish():
         time.sleep(1)
         print("Introduce uno de los números \n")
         time.sleep(1)
-        print("1 - ¿Empezar? \U0001F3C1 \n2 - Opciones \u2699 \n3 - ¿Cómo funciona? \U0001F4D6 \n4 - ¿Para qué sirve? \U0001F914 \n5 - Abandone \u274C \n")
+        print("1 - Empezar \U0001F3C1 \n2 - Opciones \u2699 \n3 - ¿Cómo funciona? \U0001F4D6 \n4 - ¿Para qué sirve? \U0001F914 \n5 - Abandone \u274C \n")
         lancement = input(":")
         while lancement not in ['1', '2', '3', '4', '5']:
             lancement = input(":")
@@ -661,7 +662,7 @@ def new_menu_spanish():
             while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 debut = input(":")
             if debut == "1":
-                print("\nEnter your question ")
+                print("\nEscribe tu pregunta ")
                 question = input(":")
                 tokquestion = tokenizer_question(question)
                 chemins_dossiers_corpus = lister_dossiers()
@@ -684,52 +685,52 @@ def new_menu_spanish():
                                                                                       vecteur_tfidf_question,
                                                                                       file_names)
                 # Afficher le résultat
-                print("The most pertinent document is :", most_relevant_document)
-                print("Its equivalent in the './speeches' directory is :", relevant_folder)
+                print("El documento más pertinente es :", most_relevant_document)
+                print("Su equivalente en el directorio './speeches' es :", relevant_folder)
                 max_tfidf_index = find_max_tfidf_word(vecteur_tfidf_document)
                 max_tfidf_word = max_tfidf_index
                 response = generate_response(relevant_folder, max_tfidf_word)
                 # Afficher la réponse générée
-                print("The answer generated is :", response)
+                print("La respuesta generada es :", response)
                 debut = input("\n¿Qué te gustaría?\n1 - ¿Hacer una pregunta?\n2 - Conocer la palabra más importante en un discurso presidencial.\n3 - Conocer las palabras menos importantes en un discurso presidencial.\n4 - Conocer las palabras más repetidas por un presidente.\n5 - Conocer el nombre del presidente que más ha repetido una determinada palabra.\n6 - Conocer el primer presidente que trató un tema.\n7 - Conocer las palabras pronunciadas por todos los presidentes.\n8 - Volver.\n9 - Salir\n:")
                 while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                     debut = input(":")
 
             elif debut == "2":
                 mot_max, score_max = mot_plus_important(tfidf_matrix)
-                print("The most important word in a president's speech. :", mot_max)
+                print("La palabra más importante en el discurso de un presidente. :", mot_max)
                 debut = input("\n¿Qué te gustaría?\n1 - ¿Hacer una pregunta?\n2 - Conocer la palabra más importante en un discurso presidencial.\n3 - Conocer las palabras menos importantes en un discurso presidencial.\n4 - Conocer las palabras más repetidas por un presidente.\n5 - Conocer el nombre del presidente que más ha repetido una determinada palabra.\n6 - Conocer el primer presidente que trató un tema.\n7 - Conocer las palabras pronunciadas por todos los presidentes.\n8 - Volver.\n9 - Salir\n:")
                 while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                     debut = input(":")
 
             elif debut == "3":
-                print("The least important word:", mots_moins_importants(tfidf_matrix))
+                print("La palabra menos importante :", mots_moins_importants(tfidf_matrix))
                 debut = input("\n¿Qué te gustaría?\n1 - ¿Hacer una pregunta?\n2 - Conocer la palabra más importante en un discurso presidencial.\n3 - Conocer las palabras menos importantes en un discurso presidencial.\n4 - Conocer las palabras más repetidas por un presidente.\n5 - Conocer el nombre del presidente que más ha repetido una determinada palabra.\n6 - Conocer el primer presidente que trató un tema.\n7 - Conocer las palabras pronunciadas por todos los presidentes.\n8 - Volver.\n9 - Salir\n:")
                 while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                     debut = input(":")
 
             elif debut == "4":
-                print("for which presidents would you like to know the most frequently used words ?\n")
+                print("¿para qué presidentes le gustaría conocer las palabras más utilizadas?\n")
                 president = input("1 - Chirac\n2 - Giscard\n3 - Holland\n 4 - Macron\n5 - Mitterand\n6 - sarkozy\n:")
                 while president not in ["1", "2", "3", "4", "5", "6"]:
                     president = input("1 - Chirac\n2 - Giscard\n3 - Holland\n4 - Macron\n5 - Mitterand\n6 - sarkozy\n:")
                 if president == "1":
-                    print("For which mandate would you like to know its most frequently used words?")
+                    print("¿para qué presidentes le gustaría conocer las palabras más utilizadas?")
                     mandat_chirac = input("1 - 1st Mandate\n2 - 2nd Mandate\n:")
                     while mandat_chirac not in ["1", "2"]:
                         mandat_chirac = input("1 - 1st Mandate\n2 - 2nd Mandate\n:")
                     if mandat_chirac == "1":
                         mot_max_chirac, score_max_chirac = mots_plus_repeter_president(path_cleaned,
                                                                                        "Cleaned_Nomination_Chirac1.txt")
-                        print("The word most repeated by Chirac in 1st Mandat is :", mot_max_chirac)
+                        print("La palabra más repetida por Chirac en el 1er Mandat es :", mot_max_chirac)
                     elif mandat_chirac == "2":
                         mot_max_chirac, score_max_chirac = mots_plus_repeter_president(path_cleaned,
                                                                                        "Cleaned_Nomination_Chirac2.txt")
-                        print("The word most repeated by Chirac in 2nd Mandat is:", mot_max_chirac)
+                        print("La palabra más repetida por Chirac en el 2º Mandat es:", mot_max_chirac)
                 elif president == "2":
                     mot_max_giscard, score_max_chirac = mots_plus_repeter_president(path_cleaned,
                                                                                     "Cleaned_Nomination_Giscard dEstaing.txt")
-                    print("The word most repeated by Giscard is :", mot_max_giscard)
+                    print("La palabra más repetida por Giscard es :", mot_max_giscard)
                 elif president == "3":
                     mot_max_hollande, score_max_chirac = mots_plus_repeter_president(path_cleaned,
                                                                                      "Cleaned_Nomination_Hollande.txt")
@@ -737,31 +738,31 @@ def new_menu_spanish():
                 elif president == "4":
                     mot_max_macron, score_max_chirac = mots_plus_repeter_president(path_cleaned,
                                                                                    "Cleaned_Nomination_Macron.txt")
-                    print("The word most repeated by Macron is :", mot_max_macron)
+                    print("La palabra más repetida por Macron es :", mot_max_macron)
                 elif president == "5":
-                    print("For which mandate would you like to know its most frequently used words?")
-                    mandat_chirac = input("1 - 1st Mandate\n2 - 2nd Mandate\n:")
+                    print("¿Para qué mandato le gustaría conocer las palabras más utilizadas?")
+                    mandat_chirac = input("1 - 1er Mandato\n2 - 2° Mandato\n:")
                     while mandat_chirac not in ["1", "2"]:
-                        mandat_chirac = input("1 - 1st Mandate\n2 - 2nd Mandate\n:")
+                        mandat_chirac = input("1 - 1er Mandato\n2 - 2° Mandato\n:")
                     if mandat_chirac == "1":
                         mot_max_mitterrand, score_max_chirac = mots_plus_repeter_president(path_cleaned,
                                                                                            "Cleaned_Nomination_Mitterrand1.txt")
-                        print("The word most repeated by Mitterrand in 1st Mandat is :", mot_max_mitterrand)
+                        print("La palabra más repetida por Mitterrand en el 1er Mandat es :", mot_max_mitterrand)
                     elif mandat_chirac == "2":
                         mot_max_mitterrand, score_max_chirac = mots_plus_repeter_president(path_cleaned,
                                                                                            "Cleaned_Nomination_Mitterrand2.txt")
-                        print("The word most repeated by Mitterrand in 2nd Mandat is :", mot_max_mitterrand)
+                        print("La palabra más repetida por Mitterrand en el 2° Mandat es :", mot_max_mitterrand)
                 elif president == "6":
                     mot_max_sarkozy, score_max_chirac = mots_plus_repeter_president(path_cleaned,
                                                                                     "Cleaned_Nomination_Sarkozy.txt")
-                    print("The word most repeated by Sarkozy is :", mot_max_sarkozy)
+                    print("La palabra más repetida por Sarkozy es :", mot_max_sarkozy)
                 debut = input("\n¿Qué te gustaría?\n1 - ¿Hacer una pregunta?\n2 - Conocer la palabra más importante en un discurso presidencial.\n3 - Conocer las palabras menos importantes en un discurso presidencial.\n4 - Conocer las palabras más repetidas por un presidente.\n5 - Conocer el nombre del presidente que más ha repetido una determinada palabra.\n6 - Conocer el primer presidente que trató un tema.\n7 - Conocer las palabras pronunciadas por todos los presidentes.\n8 - Volver.\n9 - Salir\n:")
                 while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                     debut = input(":")
 
             elif debut == "5":
                 print(
-                    "which particular word was most used by a president, you want to know ?\nEnter your word")
+                    "¿qué palabra en particular fue la más utilizada por un presidente, quieres saber? \nIntroduzca su palabra")
                 mot = input(":")
                 resultat_president = president_parlant_de_la_nation(tfidf_matrix, mot)
                 # Affichez les résultats
@@ -769,14 +770,14 @@ def new_menu_spanish():
                     print(resultat_president)  # Aucun président n'a parlé de la Nation.
                 else:
                     president_max, score_max = resultat_president
-                    print(f"The president who talks most about '{mot}' is {president_max}.")
+                    print(f"El presidente que más habla de '{mot}' es {president_max}.")
                 debut = input("\n¿Qué te gustaría?\n1 - ¿Hacer una pregunta?\n2 - Conocer la palabra más importante en un discurso presidencial.\n3 - Conocer las palabras menos importantes en un discurso presidencial.\n4 - Conocer las palabras más repetidas por un presidente.\n5 - Conocer el nombre del presidente que más ha repetido una determinada palabra.\n6 - Conocer el primer presidente que trató un tema.\n7 - Conocer las palabras pronunciadas por todos los presidentes.\n8 - Volver.\n9 - Salir\n:")
                 while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                     debut = input(":")
 
             elif debut == "6":
                 print(
-                    "Which topic would you like to know which president addressed it first ?\nKnow your topic")
+                    "¿Qué tema le gustaría saber qué presidente lo abordó primero?\nConozca su tema")
                 sujet = input(":")
                 resultat_president = premier_president_parlant_de(tfidf_matrix, sujet)
                 # Affichez les résultats
@@ -784,7 +785,7 @@ def new_menu_spanish():
                     print(resultat_president)  # Aucun président n'a parlé de la Nation.
                 else:
                     president_max, score_max = resultat_president
-                    print(f"The first president to speak '{sujet}' is {president_max}.")
+                    print(f"El primer presidente en hablar '{sujet}' es {president_max}.")
                 debut = input("\n¿Qué te gustaría?\n1 - ¿Hacer una pregunta?\n2 - Conocer la palabra más importante en un discurso presidencial.\n3 - Conocer las palabras menos importantes en un discurso presidencial.\n4 - Conocer las palabras más repetidas por un presidente.\n5 - Conocer el nombre del presidente que más ha repetido una determinada palabra.\n6 - Conocer el primer presidente que trató un tema.\n7 - Conocer las palabras pronunciadas por todos los presidentes.\n8 - Volver.\n9 - Salir\n:")
                 while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                     debut = input(":")
@@ -797,7 +798,7 @@ def new_menu_spanish():
                                                 'cette', 'ces', 'cet', 'et', 'que', 'qu', 'en', 'se', "j", "l", ]
                 resultat_mots_evoques = mots_evoques_par_tous(tfidf_matrix, mots_non_importants_resultat)
                 # Affichez les résultats
-                print("The words evoked by all the presidents are:")
+                print("Las palabras evocadas por todos los presidentes son:")
                 print(resultat_mots_evoques)
                 debut = input("\n¿Qué te gustaría?\n1 - ¿Hacer una pregunta?\n2 - Conocer la palabra más importante en un discurso presidencial.\n3 - Conocer las palabras menos importantes en un discurso presidencial.\n4 - Conocer las palabras más repetidas por un presidente.\n5 - Conocer el nombre del presidente que más ha repetido una determinada palabra.\n6 - Conocer el primer presidente que trató un tema.\n7 - Conocer las palabras pronunciadas por todos los presidentes.\n8 - Volver.\n9 - Salir\n:")
                 while debut not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
@@ -831,6 +832,7 @@ def new_menu_spanish():
                         run = False
                         run1 = False
                         run2 = False
+
                 elif langue == "3":
                     continue
                 elif langue == '4':
@@ -857,7 +859,7 @@ def new_menu_spanish():
             print("\nInicie y siga las instrucciones. \n")
             continue
         elif lancement == '4':
-            print("\nPronto disponible. \n")
+            print("\nProporciono información sobre los discursos de todos los Presidentes de la V República y puedo responder a preguntas sobre temas de su biblioteca.\n")
             continue
         elif lancement == '5':
             #run = False
